@@ -119,7 +119,7 @@ func (l *lex) readStringWithQuote(quota rune) string {
 		if l.input[pos] == quota {
 			break
 		}
-		if l.input[pos] == '\'' {
+		if l.input[pos] == '\\' {
 			pos++
 		}
 
