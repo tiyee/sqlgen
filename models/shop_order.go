@@ -4,19 +4,19 @@ package models
 import "time"
 
 type ShopOrder struct {
-	Id          uint64    `json:"id"`// bigint(20) UNSIGNED2
-	Uuid        string    `json:"uuid"`// varchar(50) CHARACTER SET utf8mb43
-	UserId      uint64    `json:"user_id"`// bigint(20) UNSIGNED3
-	Payment     uint8     `json:"payment"`// tinyint(4) UNSIGNED3
-	FeeAmount   uint      `json:"fee_amount"`// int(11) UNSIGNED3
-	PrepareTime uint      `json:"prepare_time"`// int(11) UNSIGNED3
-	PaidTime    uint      `json:"paid_time"`// int(11) UNSIGNED3
-	GoodsDetail string    `json:"goods_detail"`// text CHARACTER SET utf8mb43
-	Status      uint8     `json:"status"`// tinyint(4) UNSIGNED3
-	CreatedTs   time.Time `json:"created_ts"`// timestamp2
-	UpdatedTs   time.Time `json:"updated_ts"`// timestamp3
-	LogisticsId uint64    `json:"logistics_id"`// bigint(20) UNSIGNED3
-	Flag        uint      `json:"flag"`// int(11) UNSIGNED3
+	id           int64     `json:"id"`//
+	uuid         string    `json:"uuid"`//'uuid，为兼容旧逻辑',
+	user_id      int64     `json:"user_id"`//'购买用户id',
+	payment      int8      `json:"payment"`//'0-no,1-wepay,2-alipay',
+	fee_amount   int       `json:"fee_amount"`//'总共需要支付费用',
+	prepare_time int       `json:"prepare_time"`//'发起支付时间,10位时间戳',
+	paid_time    int       `json:"paid_time"`//'回调确认支付时间',
+	goods_detail string    `json:"goods_detail"`//'订单商品详情，json数组',
+	status       int8      `json:"status"`//'1-待支付,3-待确认,4-已经支付成功,5-支付失败,6-物流中，7-关闭,8-完成',
+	created_ts   time.Time `json:"created_ts"`//
+	updated_ts   time.Time `json:"updated_ts"`//
+	logistics_id int64     `json:"logistics_id"`//'物流id',
+	flag         int       `json:"flag"`//'01-已计算sold_amount,10-已经评论',
 }
 
 func (s *ShopOrder) Pk() string {
