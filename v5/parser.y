@@ -111,8 +111,6 @@ CreateTableStmt:
         $$.Receive($6,yylex)
         $$.Receive($8,yylex)
     }
-
-
     ;
 ColumnsStmt:
 

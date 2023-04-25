@@ -75,7 +75,7 @@ func (l *lex) Lex(lval *yySymType) int {
 		str := l.readString()
 		tok := findKeyword(str)
 		if tok > 0 {
-			return tok
+			return tok + 1
 		}
 		lval.s = str
 		return tString
@@ -88,8 +88,6 @@ func (l *lex) Lex(lval *yySymType) int {
 			l.Error(err.Error())
 			return 0
 		}
-
-		fmt.Println("ret: ", "tString", tString)
 		return tNumber
 	}
 	return 0
