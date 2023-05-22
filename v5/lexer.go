@@ -13,11 +13,11 @@ type lex struct {
 	size  int
 	pos   int
 	err   error
-	Stmt  CreateTableStmt
+	Stmt  *CreateTableStmt
 	prev  *yySymType
 }
 
-func (l *lex) SetStmt(st CreateTableStmt) {
+func (l *lex) SetStmt(st *CreateTableStmt) {
 	l.Stmt = st
 }
 func (l *lex) Reduced(rule, state int, lval *yySymType) bool {
@@ -50,8 +50,8 @@ func (l *lex) Lex(lval *yySymType) int {
 	lval.pos = l.pos
 	defer func() {
 		l.prev = lval
+		//fmt.Printf("lval: %+v \n", lval)
 	}()
-	fmt.Println(string(ch), ch)
 	switch ch {
 	case '`':
 		return TILDE
@@ -74,8 +74,9 @@ func (l *lex) Lex(lval *yySymType) int {
 	if isLetter(ch) {
 		str := l.readString()
 		tok := findKeyword(str)
+
 		if tok > 0 {
-			return tok + 1
+			return tok
 		}
 		lval.s = str
 		return tString

@@ -1,6 +1,5 @@
 %{
 package v5
-
 var ftm map[string]int //field type map
 func init() {
     ftm = map[string]int{
@@ -39,13 +38,13 @@ func init() {
                   ColumnStmt TableIndexListStmt TableIndexStmt   NameListStmt
 
 
-%token LPAREN '('
+%token LPAREN "("
 	LBRACK "["
 	LBRACE "{"
 	COMMA  ","
 	PERIOD "."
 
-	RPAREN    ')'
+	RPAREN    ")"
 	RBRACK    "]"
 	RBRACE    "}"
 	SEMICOLON ";"
@@ -87,9 +86,13 @@ func init() {
        	tpDate
        	tpDatetime
        	tpTimestamp
+
+%start main
+
 %%
+
 main: CreateTableStmt {
-    yylex.(*lex).Stmt=*$1.(*CreateTableStmt)
+    yylex.(*lex).Stmt=$1.( *CreateTableStmt)
 }
 
 CreateTableStmt:

@@ -111,6 +111,7 @@ type StmtNode interface {
 	node
 	Receive(nod node, lexer yyLexer)
 }
+
 type CreateTableStmt struct {
 	NameNode
 	ColumnsStmt        *ColumnsStmt
@@ -131,6 +132,7 @@ func (c *CreateTableStmt) Receive(nod node, s yyLexer) {
 	default:
 		unexpectedNode(nod, s)
 	}
+
 }
 func (c *CreateTableStmt) Type() NodeType {
 	return ndCreateTableStmt

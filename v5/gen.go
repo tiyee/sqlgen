@@ -52,12 +52,13 @@ func (c *Creator) StructName() string {
 	return exportName(c.NameNode.s)
 }
 func (c *Creator) Create() *ast.GenDecl {
+
 	fields := make([]*ast.Field, 0, len(*c.ColumnsStmt))
 	for _, field := range *c.ColumnsStmt {
 		fields = append(fields, &ast.Field{
 			Names: []*ast.Ident{
 				&ast.Ident{
-					Name: field.NameNode.s,
+					Name: exportName(field.NameNode.s),
 				},
 			},
 			Type: &ast.Ident{
@@ -164,28 +165,32 @@ func (c *Creator) Save(wr io.Writer) error {
 			Name:    "models",
 			NamePos: token.Pos(len("Package") + 2),
 		}}
-	fn := func(col *ColumnStmt) bool {
-		return col.t == "timestamp"
-	}
-	if c.ColumnsStmt.ExistF(fn) {
-		ff.Decls = append(ff.Decls, &ast.GenDecl{
-			Tok: token.IMPORT,
-			Specs: []ast.Spec{
-				&ast.ImportSpec{
-					Path: &ast.BasicLit{
-						Kind:  token.STRING,
-						Value: fmt.Sprintf("\"%s\"", "time"),
+
+	if c.ColumnsStmt != nil {
+		fn := func(col *ColumnStmt) bool {
+			return col.t == "timestamp"
+		}
+		if c.ColumnsStmt.ExistF(fn) {
+			ff.Decls = append(ff.Decls, &ast.GenDecl{
+				Tok: token.IMPORT,
+				Specs: []ast.Spec{
+					&ast.ImportSpec{
+						Path: &ast.BasicLit{
+							Kind:  token.STRING,
+							Value: fmt.Sprintf("\"%s\"", "time"),
+						},
 					},
 				},
-			},
-		})
+			})
+		}
 	}
+
 	ff.Decls = append(ff.Decls,
 		c.Create(),
 		c.PkFunc(),
 		c.TableFunc(),
 	)
-	fmt.Println("len:", len(ff.Decls))
+	//fmt.Println("len:", len(ff.Decls))
 	if _, err := wr.Write([]byte(cm)); err != nil {
 		return err
 	}

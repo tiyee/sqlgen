@@ -87,7 +87,7 @@ var yyToknames = [...]string{
 	"tString",
 	"tNumber",
 	"LPAREN",
-	"'('",
+	"\"(\"",
 	"LBRACK",
 	"\"[\"",
 	"LBRACE",
@@ -97,7 +97,7 @@ var yyToknames = [...]string{
 	"PERIOD",
 	"\".\"",
 	"RPAREN",
-	"')'",
+	"\")\"",
 	"RBRACK",
 	"\"]\"",
 	"RBRACE",
@@ -613,7 +613,7 @@ yydefault:
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		{
-			yylex.(*lex).Stmt = *yyDollar[1].statement.(*CreateTableStmt)
+			yylex.(*lex).Stmt = yyDollar[1].statement.(*CreateTableStmt)
 		}
 	case 2:
 		yyDollar = yyS[yypt-2 : yypt+1]

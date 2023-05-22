@@ -32,13 +32,14 @@ func main() {
 
 		f, err := os.OpenFile(*out, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Println("openFile err: ", err.Error())
 		}
 		defer f.Close()
 		wr = f
 	}
 
 	creator := v5.ParseSql(string(bs))
+
 	if err := creator.Save(wr); err != nil {
 		fmt.Println(err.Error())
 	}

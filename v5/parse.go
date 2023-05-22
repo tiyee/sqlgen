@@ -29,6 +29,7 @@ func ParseSql(sql string) *Creator {
 		pos:   0,
 	}
 	yyParse(&l)
-	c := Creator(l.Stmt)
+	//fmt.Printf("stmt: %+v \n", l.Stmt)
+	c := Creator(*l.Stmt)
 	return &c
 }
